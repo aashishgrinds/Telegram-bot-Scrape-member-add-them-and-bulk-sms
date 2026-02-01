@@ -1,86 +1,202 @@
-# 🚀 TeleBot Manager Tool: Scrape Telegram Members and Add to your Group and Send to Bulk SMS  All Scraped Members
+# 🤖 Telegram Bot : Member Scraper, Group Adder & Bulk SMS
 
-## Environment Setup:
+A comprehensive Telegram automation toolkit for scraping group members, adding them to your groups, and sending bulk messages.
 
-1. **Download and Install Python:**
-   - Visit [python.org/downloads](https://www.python.org/downloads/) to download and install Python for your operating system.
-   - Set up the Python environment path in Windows, Linux, or macOS.
+## 🚀 Features
 
-   **Download and Install VS Code:**
-      - Visit [code.visualstudio.com/download](https://code.visualstudio.com/download) to download and install VS Code for your operating system.
+- **Multi-account management** with session persistence
+- **Advanced member scraping** with activity filtering
+- **Automated member addition** with rate limiting
+- **Bulk messaging** with flood protection
+- **Windows automation** for parallel processing
+- **Colorful console interface** with detailed progress tracking
 
-2. **Create Python Virtual Environment:**
-   - Open your terminal in the project directory or Open the project directory in VS code.
-   - Run the command: `python -m venv env` to create a virtual environment.
-     
-   **Activate the environment :** 
-    - Windows: `.\env\Scripts\activate` 
-    - Linux or macOS: `source env/bin/activate`
+## 📋 Prerequisites
 
-3. **Install Project Dependencies:**
-   - Run: `pip install -r requirements.txt` to install project dependencies.
+- Python 3.7+
+- Telegram API credentials
+- Windows OS (for full automation features)
 
-4. **Create Telegram API Token:**
-   - Go to [my.telegram.org/auth](https://my.telegram.org/auth).
-   - Enter your phone number and set up the API information to generate an API token.
+## 🛠️ Installation
 
-## Documentation:
+1. **Clone the repository**
 
-**Step 1: Setup Accounts**
+   ```bash
+   git clone https://github.com/aashishgrinds/Telegram-bot-Scrape-member-add-them-and-bulk-sms.git
+   cd Telegram-bot-Scrape-member-add-them-and-bulk-sms
+   ```
 
-- Open the terminal in the project directory.
-- Run `python authenticate.py`.
-  - Choose option 1 to enter new accounts.
-  - Enter Api id, Api hash, and phone number.
-  - If adding more accounts, enter 'y'; if not, enter 'n'.
-  - Choose option 2 to filter all banned accounts.
-  - Choose option 3 to show all accounts.
-  - Choose option 4 to delete accounts.
+2. **Create virtual environment**
 
-**Step 2: Scraping Members**
+   ```bash
+   python -m venv env
+   # Windows
+   .\env\Scripts\activate
+   # Linux/macOS
+   source env/bin/activate
+   ```
 
-- Run `python member_scraper.py` in the terminal.
-  - Choose an account to scrape.
-  - Choose to scrape from a public or private group.
-    - PUBLIC GROUPS: Suppose public group username is @PythonHub. Enter only 'PythonHub'. Omit '@' and hit enter
-     - PRIVATE GROUPS: Copy invite link and paste in the terminal and hit enter.
-  - Choose whether to filter active users.
+3. **Install dependencies**
 
-**Step 3: Adding Members**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- Launch `python member_adder.py` in the terminal.
-- It'll create sessions and prompt for a login code if not logged in.
-- Enter the username of the public group without '@'.
-- Enter the number of accounts to use.
-- Read the warning and press enter to proceed.
-- It'll add members using the specified accounts.
+4. **Get Telegram API credentials**
+   - Visit [my.telegram.org/auth](https://my.telegram.org/auth)
+   - Create an app to get API ID and API Hash
 
-**Troubleshooting:**
+## 📖 Usage Guide
 
-1. **Members Not Getting Added:**
-   - It may be due to account limitations. Try using other accounts.
+### Step 1: Account Management
 
-2. **Error While Logging In:**
-   - If you have two-factor authentication enabled, turn it off. You can turn it back on after logging in.
+Run `python authenticate.py` to manage your Telegram accounts:
 
-For any problems, open an issue on GitHub or contact the developer via the Telegram group mentioned in the README.md.
+**Options:**
 
-**Step 4: Send Bulk Messages**
+- `[1] Add new accounts` - Enter API ID, API Hash, and phone number
+- `[2] Filter banned accounts` - Remove suspended accounts
+- `[3] List all accounts` - View stored credentials
+- `[4] Delete specific accounts` - Remove selected accounts
+- `[5] Quit` - Exit the program
 
-- Launch `python bulk_sms.py` in the terminal.
-- Select the number and enter.
-- Choose the option to send a message based on the member's username or user ID.
-- It will send the message to all members in the group.
+### Step 2: Member Scraping
 
-Ensure to follow the documentation properly for smooth execution of the project.
-## Color Reference
+Run `python member_scraper.py` to extract group members:
 
-| Color             | Hex                                                                |
-| ----------------- | ------------------------------------------------------------------ |
-| Example Color | ![#0a192f](https://via.placeholder.com/10/0a192f?text=+) #0a192f |
-| Example Color | ![#f8f8f8](https://via.placeholder.com/10/f8f8f8?text=+) #f8f8f8 |
-| Example Color | ![#00b48a](https://via.placeholder.com/10/00b48a?text=+) #00b48a |
-| Example Color | ![#00d1a0](https://via.placeholder.com/10/00b48a?text=+) #00d1a0 |
+**Features:**
 
+- Choose from multiple authenticated accounts
+- Support for public and private groups
+- Activity-based filtering:
+  - All users
+  - Active users (online today/yesterday)
+  - Users active in last week/month
+  - Non-active users
+- Optional admin separation
+- Data saved to `members/members.csv`
 
+**Group Input:**
+
+- **Public groups**: Enter username without `@` (e.g., `PythonHub`)
+- **Private groups**: Paste invite link
+
+### Step 3: Member Addition
+
+Run `python member_adder.py` for automated member invitation:
+
+**Process:**
+
+1. Creates sessions for all accounts
+2. Joins target group from all accounts
+3. Distributes members across accounts (60 per account)
+4. Launches parallel `user_adder.py` instances
+5. Automated Windows CMD execution
+
+**Features:**
+
+- Multi-account parallel processing
+- CSV file distribution
+- Rate limiting (30s between additions)
+- Flood protection
+- Progress tracking and resume capability
+
+### Step 4: Bulk Messaging
+
+Run `python bulk_sms.py` to send messages to scraped members:
+
+**Options:**
+
+- Send by username or user ID
+- Custom message content
+- Random delays (15-25 seconds)
+- Flood wait handling
+- Error recovery
+
+## 📁 Project Structure
+
+```
+├── authenticate.py      # Account management system
+├── member_scraper.py    # Group member extraction
+├── member_adder.py      # Automated member addition coordinator
+├── user_adder.py        # Individual member addition worker
+├── bulk_sms.py          # Bulk messaging system
+├── account_info.txt     # Stored account credentials
+├── members/             # Scraped member data
+│   ├── members.csv      # Main member database
+│   └── admins.csv       # Separated admin data
+├── sessions/            # Telegram session files
+├── target_group.txt     # Last scraped group info
+└── requirements.txt     # Python dependencies
+```
+
+## ⚙️ Configuration
+
+### Rate Limiting
+
+- **Member addition**: 25-35 seconds between additions
+- **Bulk messaging**: 15-25 seconds between messages
+- **Batch processing**: 60 users per account
+- **Flood protection**: Automatic handling of Telegram limits
+
+### Error Handling
+
+- **Phone number bans**: Automatic filtering
+- **Flood wait errors**: Automatic retry with proper delays
+- **Privacy restrictions**: Skip users with privacy settings
+- **Network interruptions**: Resume capability with progress saving
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Members not getting added:**
+
+- Check if accounts are banned (use option 2 in authenticate.py)
+- Verify target group permissions
+- Try with different accounts
+
+**Login errors:**
+
+- Disable two-factor authentication temporarily
+- Verify phone number format (country code + number)
+- Check API credentials
+
+**Flood errors:**
+
+- Wait for the specified time period
+- Reduce the number of concurrent accounts
+- Increase delay intervals
+
+**Session issues:**
+
+- Delete corrupted session files from `sessions/` folder
+- Re-authenticate affected accounts
+
+### Safety Tips
+
+- Use aged Telegram accounts (6+ months old)
+- Don't exceed 10 concurrent accounts
+- Monitor for Telegram warnings
+- Respect rate limits and user privacy
+
+## 📊 Data Format
+
+### members.csv Structure
+
+```csv
+username,user_id,access_hash,group,group_id,status
+john_doe,123456789,987654321,TargetGroup,-100123456789,UserStatusOnline
+```
+
+### account_info.txt Format
+
+Binary file storing tuples of: `(api_id, api_hash, phone_number)`
+
+## 🚨 Important Notes
+
+- **Windows Only**: Full automation features require Windows
+- **API Limits**: Respect Telegram's rate limits
+- **Legal Compliance**: Use responsibly and comply with ToS
+- **Backup Data**: Regularly backup `account_info.txt` and session files
 
